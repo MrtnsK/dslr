@@ -2,6 +2,7 @@ import pandas as pd
 import csv
 import sys
 from math import sqrt
+import numpy as np
 
 def describe(dataset):
 	data = dataset[dataset.columns[6:19]]
@@ -16,7 +17,7 @@ def describe(dataset):
 	for i in range(data.shape[1]):
 		c = data.iloc[:,i].tolist()
 		c = [x for x in c if str(x) != 'nan']
-		c.sort
+		c.sort()
 		count.append(len(c))
 		mean.append(sum(c) / len(c))
 		vmin.append(min(c))
@@ -25,8 +26,14 @@ def describe(dataset):
 		for i in range(len(c)):
 			result += (c[i] - sum(c) / len(c))**2 
 		result = result / (len(c) - 1)
-		std = sqrt(result)
-		print (std)
+		std.append(sqrt(result))
+		fQ.append(c[int(len(c) * 0.25)])
+		sQ.append(c[int(len(c) * 0.5)])
+		tQ.append(c[int(len(c) * 0.75)])
+	datalist = list(zip(count, mean, std, vmin, fQ, sQ, tQ, vmax))
+	datalist = np.transpose(datalist)
+	dataframe = pd.DataFrame(datalist, columns=data.columns.values, index=['count', 'mean', 'std', 'vmin', '25%', '50%', '75%', 'vmax'])
+	print(dataframe)
 
 if __name__ == "__main__":
 	if (len(sys.argv) < 2):
