@@ -3,6 +3,16 @@ import sys
 from math import sqrt
 import numpy as np
 
+def get_m(c):
+	_max = 0
+	_min = 0
+	for i in c:
+		if (i > _max):
+			_max = i
+		if (i < _min):
+			_min = i
+	return _max, _min
+
 def describe(dataset):
 	data = dataset[dataset.columns[6:19]]
 	count = []
@@ -19,6 +29,7 @@ def describe(dataset):
 		c.sort()
 		count.append(len(c))
 		mean.append(sum(c) / len(c))
+		_max, _min = get_m(c)
 		vmin.append(min(c))
 		vmax.append(max(c))
 		result = 0
