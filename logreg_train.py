@@ -8,15 +8,21 @@ def StandardScaler(X):
     scale = np.std(X - mean, axis=0)
     return (X - mean) / scale
 
+def predict(X, theta):
+	presig = np.dot(X, theta)
+	sig = 1 / ( 1 + presig)
+	return sig
+
 def	cost(X, y, theta, passes):
-	
+	print(((-1 / X.shape[0]) * np.sum(y * np.log(predict(X, theta)) + (1 - y) * np.log(1 - predict(X, theta)))))
 
 def OfA(X, y):
-	cost = []
+	costs = []
 	theta = xavier(X)
+	alpha = 1
 	m = float(len(X))
 	for passes in range(2000):
-		theta = theta - 1 * (1 / m) * (X.T @ ((X @ theta) - y))
+		theta = theta - alpha * (1 / m) * (np.dot((predict(X, theta) - y), X))
 		costs.append(cost(X, y, theta, passes))
 	return costs
 
