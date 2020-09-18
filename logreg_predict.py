@@ -42,7 +42,7 @@ def get_thetas():
 		exit(1)	
 
 if __name__ == "__main__":
-	if (len(sys.argv) < 3):
+	if (len(sys.argv) != 3):
 		sys.exit('Please give a valid Dataset and the thetas.csv')
 	X, y = get_dataset()
 	theta_g, theta_s, theta_r, theta_h = get_thetas()
@@ -50,3 +50,12 @@ if __name__ == "__main__":
 	pred_s = predict(X, theta_s)
 	pred_r = predict(X, theta_r)
 	pred_h = predict(X, theta_h)
+	for i in range(len(pred_g)):
+		grade = 0
+		house = 0
+		if pred_g[i] > pred_s[i]:
+			grade = pred_g[i]
+			house = 'Gryffindor'
+		else:
+			grade = pred_s[i]
+			house = 'Slytherin'
