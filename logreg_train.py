@@ -12,6 +12,7 @@ def predict(X, theta):
 	z = np.dot(X, theta)
 	sig = 1 / (1 + np.exp(-z))
 	return sig
+	
 # xavier initialization
 # https://towardsdatascience.com/weight-initialization-techniques-in-neural-networks-26c649eb3b78
 def xavier(X):
@@ -31,12 +32,12 @@ def OfA(X, y, House):
 	for epoch in range(3000):
 		theta = theta - lr * (1 / m) * (np.dot((predict(X, theta) - y), X))
 		costs.append(cost(X, y, theta))
-		lr = (1 / (1 + lr * epoch))
+		lr = (1. / (1. + lr * epoch))
 	x = np.arange(len(costs))
 	plt.plot(x, costs)
 	plt.title(House)
 	plt.show()
-	return costs
+	return theta
 
 def	LogisticRegression(X, y):
 	y_g = y.replace({"Gryffindor" : 1 , "Slytherin" : 0, "Ravenclaw" : 0, "Hufflepuff" : 0})
@@ -48,6 +49,7 @@ def	LogisticRegression(X, y):
 	theta_r = OfA(X, y_r, "Ravenclaw")
 	theta_h = OfA(X, y_h, "Hufflepuff")
 	thetas = [theta_g, theta_s, theta_r, theta_h]
+	print(thetas)
 	return thetas
 
 if __name__ == "__main__":
@@ -62,4 +64,6 @@ if __name__ == "__main__":
 	X = np.array(dataset)
 	X = StandardScaler(X)
 	X = np.c_[np.ones(X.shape[0]), X]
-	LogisticRegression(X,y)
+	thetas = LogisticRegression(X,y)
+	thetas = np.array(thetas)
+	np.savetxt("thetas.csv", thetas.T, delimiter=",", header="Gryffindor,Slytherin,Ravenclaw,Hufflepuf", comments="")  
