@@ -66,4 +66,4 @@ if __name__ == "__main__":
 	X = np.c_[np.ones(X.shape[0]), X]
 	thetas = LogisticRegression(X,y)
 	thetas = np.array(thetas)
-	np.savetxt("thetas.csv", thetas.T, delimiter=",", header="Gryffindor,Slytherin,Ravenclaw,Hufflepuf", comments="")  
+	np.savetxt("thetas.csv", thetas.T, delimiter=",", header="Gryffindor,Slytherin,Ravenclaw,Hufflepuff", comments="")  
