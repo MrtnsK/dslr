@@ -9,36 +9,44 @@ def StandardScaler(X):
     return (X - mean) / scale
 
 def predict(X, theta):
-	presig = np.dot(X, theta)
-	sig = 1 / ( 1 + presig)
+	z = np.dot(X, theta)
+	sig = 1 / (1 + np.exp(-z))
 	return sig
-
-def	cost(X, y, theta, passes):
-	print(((-1 / X.shape[0]) * np.sum(y * np.log(predict(X, theta)) + (1 - y) * np.log(1 - predict(X, theta)))))
-
-def OfA(X, y):
-	costs = []
-	theta = xavier(X)
-	alpha = 1
-	m = float(len(X))
-	for passes in range(2000):
-		theta = theta - alpha * (1 / m) * (np.dot((predict(X, theta) - y), X))
-		costs.append(cost(X, y, theta, passes))
-	return costs
-
+# xavier initialization
 # https://towardsdatascience.com/weight-initialization-techniques-in-neural-networks-26c649eb3b78
 def xavier(X):
-    return np.random.randn(X.shape[1]) * np.sqrt(1 / X.shape[1])
+	return np.random.randn(X.shape[1]) * np.sqrt(1 / X.shape[1])
+
+def	cost(X, y, theta):
+	return ((-1 / X.shape[0]) * np.sum(y * np.log(predict(X, theta)) + (1 - y) * np.log(1 - predict(X, theta))))
+
+# learning rate decay
+# https://towardsdatascience.com/learning-rate-schedules-and-adaptive-learning-rate-methods-for-deep-learning-2c8f433990d1
+def OfA(X, y, House):
+	costs = []
+	y = np.array(y)
+	theta = xavier(X)
+	lr = 1
+	m = float(len(X))
+	for epoch in range(3000):
+		theta = theta - lr * (1 / m) * (np.dot((predict(X, theta) - y), X))
+		costs.append(cost(X, y, theta))
+		lr = (1 / (1 + lr * epoch))
+	x = np.arange(len(costs))
+	plt.plot(x, costs)
+	plt.title(House)
+	plt.show()
+	return costs
 
 def	LogisticRegression(X, y):
-	y_g = y.replace({"Gryffindor" : 1 , "Slytherin" : 0, "Ravenclaw" : 0, "Hufflepuf" : 0})
-	y_s = y.replace({"Gryffindor" : 0 , "Slytherin" : 1, "Ravenclaw" : 0, "Hufflepuf" : 0})
-	y_r = y.replace({"Gryffindor" : 0 , "Slytherin" : 0, "Ravenclaw" : 1, "Hufflepuf" : 0})
-	y_h = y.replace({"Gryffindor" : 0 , "Slytherin" : 0, "Ravenclaw" : 0, "Hufflepuf" : 1})
-	theta_g = OfA(X, y_g)
-	theta_s = OfA(X, y_s)
-	theta_r = OfA(X, y_r)
-	theta_h = OfA(X, y_h)
+	y_g = y.replace({"Gryffindor" : 1 , "Slytherin" : 0, "Ravenclaw" : 0, "Hufflepuff" : 0})
+	y_s = y.replace({"Gryffindor" : 0 , "Slytherin" : 1, "Ravenclaw" : 0, "Hufflepuff" : 0})
+	y_r = y.replace({"Gryffindor" : 0 , "Slytherin" : 0, "Ravenclaw" : 1, "Hufflepuff" : 0})
+	y_h = y.replace({"Gryffindor" : 0 , "Slytherin" : 0, "Ravenclaw" : 0, "Hufflepuff" : 1})
+	theta_g = OfA(X, y_g, "Gryffindor")
+	theta_s = OfA(X, y_s, "Slytherin")
+	theta_r = OfA(X, y_r, "Ravenclaw")
+	theta_h = OfA(X, y_h, "Hufflepuff")
 	thetas = [theta_g, theta_s, theta_r, theta_h]
 	return thetas
 
