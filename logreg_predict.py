@@ -21,6 +21,9 @@ def get_dataset():
 		dataset = dataset[dataset.columns[6:19]]
 		dataset = dataset.drop('Astronomy', axis=1)
 		dataset = dataset.drop('Defense Against the Dark Arts', axis=1)
+		dataset = dataset.drop('Arithmancy', axis=1)
+		dataset = dataset.drop('Care of Magical Creatures', axis=1)
+		dataset = dataset.drop('Potions', axis=1)
 		X = np.array(dataset)
 		X = StandardScaler(X)
 		X = np.c_[np.ones(X.shape[0]), X]

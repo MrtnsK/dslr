@@ -49,7 +49,6 @@ def	LogisticRegression(X, y):
 	theta_r = OfA(X, y_r, "Ravenclaw")
 	theta_h = OfA(X, y_h, "Hufflepuff")
 	thetas = [theta_g, theta_s, theta_r, theta_h]
-	print(thetas)
 	return thetas
 
 if __name__ == "__main__":
@@ -61,6 +60,9 @@ if __name__ == "__main__":
 	dataset = dataset[dataset.columns[6:19]]
 	dataset = dataset.drop('Astronomy', axis=1)
 	dataset = dataset.drop('Defense Against the Dark Arts', axis=1)
+	dataset = dataset.drop('Arithmancy', axis=1)
+	dataset = dataset.drop('Care of Magical Creatures', axis=1)
+	dataset = dataset.drop('Potions', axis=1)
 	X = np.array(dataset)
 	X = StandardScaler(X)
 	X = np.c_[np.ones(X.shape[0]), X]

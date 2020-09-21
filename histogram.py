@@ -24,3 +24,5 @@ if __name__ == "__main__":
 	dataset = pd.read_csv(sys.argv[1])
 	gradedata = dataset[dataset.columns[6:19]]
 	histogram(dataset, dataset[gradedata.columns.values])
+
+#  Care of Magical Creature est le cours avec une répartition des notes homogènes entre les quatres maisons
