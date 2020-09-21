@@ -50,6 +50,7 @@ if __name__ == "__main__":
 	pred_s = predict(X, theta_s)
 	pred_r = predict(X, theta_r)
 	pred_h = predict(X, theta_h)
+	prediction = []
 	for i in range(len(pred_g)):
 		grade = 0
 		house = 0
@@ -59,3 +60,14 @@ if __name__ == "__main__":
 		else:
 			grade = pred_s[i]
 			house = 'Slytherin'
+		if pred_r[i] > grade:
+			grade = pred_r[i]
+			house = 'Ravenclaw'
+		if pred_h[i] > grade:
+			grade = pred_h[i]
+			house = 'Hufflepuff'
+		prediction.append(house)
+	prediction = np.array(prediction)
+	prediction = pd.DataFrame(prediction, columns=['Hogwarts House'])
+	prediction = prediction.rename_axis('Index', axis=0)
+	prediction.to_csv('houses.csv')
