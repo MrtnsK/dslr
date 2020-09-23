@@ -4,6 +4,7 @@ import sys
 
 def	get_house_grades(dataset, gradedata, house, grade):
 	data = gradedata[dataset["Hogwarts House"] == house][grade]
+	data = data.copy()
 	data.dropna(inplace=True)
 	return data
 
